@@ -1,15 +1,22 @@
 [tool.poetry]
-name = "autopyte"
+name = "weatherboy"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["Team Autopyte"]
 readme = "README.md"
+packages = [
+    {include="weatherboy", from="src"}
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-
 requests = "^2.31.0"
 
+[tool.poetry.group.test.dependencies]
+pytest = "^7.3.1"
+
+[tool.poetry.scripts]
+weatherboy = "weatherboy.cli:entrypoint"
 
 [build-system]
 requires = ["poetry-core"]
