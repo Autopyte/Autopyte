@@ -8,13 +8,13 @@ import requests
 from requests import Response
 
 BASE_URL: str = "https://api.openweathermap.org"
-API_KEY: str = "b1b15e88fa797225412429c1c50c122a1"
+API_KEY: str = "54c4b31043220bf31b4fd51fb22852ab"
 
 WEATHER_ENDPOINT: str = "/data/3.0/onecall"
 GEO_ENDPOINT: str = "/geo/1.0/direct"
 
 
-def search_location(q: str) -> Any:
+def search_location(q: str) -> list:
     """
     Search for a location using the OpenWeatherMap API
 

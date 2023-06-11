@@ -11,6 +11,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.11"
 requests = "^2.31.0"
+questionary = "^1.10.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.3.1"
