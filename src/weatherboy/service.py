@@ -3,13 +3,14 @@
 #  Please see the LICENSE file that should have been included as part of this package
 
 from typing import Any
-
+from client import search_location
+from client import fetch_current_weather
 from weatherboy.models import City
 
 
 def search_for_cities(query: str) -> list[City]:
-    pass
+    return search_location(str)
 
 
 def get_current_weather(latitude: float, longitude: float) -> Any:
-    pass
+    return fetch_current_weather(latitude, longitude)
