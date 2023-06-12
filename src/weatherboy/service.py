@@ -8,10 +8,12 @@ from weatherboy.models import City
 
 
 def search_for_cities(query: str) -> list[City]:
-    city_list_json = search_location(query)
     city_list: list[City] = []
-    for city in city_list_json:
-        city_list.append(City(city["name"], city["state"], city["country"], city["lat"], city["lon"]))
+
+    for city in search_location(query):
+        city_obj = City(**city)
+        city_list.append(city_obj)
+
     return city_list
 
 

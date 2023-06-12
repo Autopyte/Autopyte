@@ -17,6 +17,9 @@ def entrypoint() -> None:
         "Choose one", [f"{city.name}, {city.state}, {city.country}" for city in cities]
     ).ask()
 
+    latitude: float = 0.0
+    longitude: float = 0.0
+
     for city in cities:
         if f"{city.name}, {city.state}, {city.country}" == selected_city_name:
             latitude: float = city.lat
