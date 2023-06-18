@@ -8,6 +8,15 @@ from pydantic import BaseModel
 class City(BaseModel):
     name: str
     state: str = ""
-    country: str
+    country: str = ""
     lat: float
     lon: float
+
+    @property
+    def display_name(self):
+        res = self.name
+        if self.state:
+            res += ', ' + self.state
+        if self.country:
+            res += ', ' + self.country
+        return res

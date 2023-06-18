@@ -39,11 +39,11 @@ def entrypoint() -> None:
 
     else:
         selected_city_name: str = questionary.select(
-            "Choose one", [f"{city.name}, {city.state}, {city.country}" for city in cities]
+            "Choose one", [city.display_name for city in cities]
         ).ask()
 
         for city in cities:
-            if f"{city.name}, {city.state}, {city.country}" == selected_city_name:
+            if selected_city_name == city.display_name:
                 latitude: float = city.lat
                 longitude: float = city.lon
                 break
