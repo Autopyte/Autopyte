@@ -8,12 +8,12 @@ import questionary
 
 from weatherboy.models import City
 from weatherboy.service import search_for_cities, get_current_weather
-from weatherboy.utils import get_or_default, create_table
+from weatherboy.utils import get_or_default, create_table, reset_current_line, pprint
 
 
 def entrypoint() -> None:
     # Intro
-    print("""
+    pprint("""
         __        __         _   _               ____              
         \ \      / /__  __ _| |_| |__   ___ _ __| __ )  ___  _   _ 
          \ \ /\ / / _ \/ _` | __| '_ \ / _ \ '__|  _ \ / _ \| | | |
@@ -28,9 +28,14 @@ def entrypoint() -> None:
     latitude: float = 0.0
     longitude: float = 0.0
 
+    pprint("Searching Cities ...", style="fg:cyan", end='')
+
     cities: list[City] = search_for_cities(query)
+    reset_current_line()
+
     if not cities:
-        print("No such city found !!!")
+        pprint()
+        pprint("No such city found !!!", style="fg:red")
         return
 
     elif len(cities) == 1:
@@ -49,9 +54,12 @@ def entrypoint() -> None:
                 break
 
     # Fetch current weather
-    weather_data: Any = get_current_weather(latitude, longitude)
+    pprint("Fetching Weather Details ...", style="fg:cyan", end='')
 
-    # Print
+    weather_data: Any = get_current_weather(latitude, longitude)
+    reset_current_line()
+
+    # pprint
     current_weather(weather_data)
 
     # Detailed weather
@@ -62,26 +70,27 @@ def entrypoint() -> None:
         sunrise_and_sunset(weather_data)
 
     # End
-    print("Thank You for using WeatherBoy")
+    pprint()
+    pprint("Thank You for using WeatherBoy", style="fg:cyan")
 
 
 def current_weather(data: dict) -> None:
-    print()
-    print(f"Current Weather at {data['name']}")
-    print()
+    pprint()
+    pprint(f"Current Weather at {data['name']}")
+    pprint()
     table_data = {
         'Weather': get_or_default(data, ['weather', 0, 'main']),
         'Temperature': get_or_default(data, ['main', 'temp']),
         'Feels Like': get_or_default(data, ['main', 'feels_like']),
     }
-    print(create_table(table_data))
-    print()
+    pprint(create_table(table_data))
+    pprint()
 
 
 def detailed_weather(data: dict) -> None:
-    print()
-    print(f"Detailed Weather at {data['name']}")
-    print()
+    pprint()
+    pprint(f"Detailed Weather at {data['name']}")
+    pprint()
     table_data = {
         'Weather': get_or_default(data, ['weather', 0, 'main']),
         'Description': get_or_default(data, ['weather', 0, 'description']),
@@ -90,14 +99,14 @@ def detailed_weather(data: dict) -> None:
         'Min Temp': get_or_default(data, ['main', 'temp_min']),
         'Max Temp': get_or_default(data, ['main', 'temp_max']),
     }
-    print(create_table(table_data))
-    print()
+    pprint(create_table(table_data))
+    pprint()
 
 
 def current_details(data: dict) -> None:
-    print()
-    print(f"Current Details")
-    print()
+    pprint()
+    pprint(f"Current Details")
+    pprint()
     table_data = {
         'Pressure': get_or_default(data, ['main', 'pressure']),
         'Humidity': get_or_default(data, ['main', 'humidity']),
@@ -105,30 +114,30 @@ def current_details(data: dict) -> None:
         'Ground Level': get_or_default(data, ['main', 'grnd_level']),
         'Visibility': get_or_default(data, ['visibility']),
     }
-    print(create_table(table_data))
-    print()
+    pprint(create_table(table_data))
+    pprint()
 
 
 def wind(data: dict) -> None:
-    print()
-    print(f"Wind")
-    print()
+    pprint()
+    pprint(f"Wind")
+    pprint()
     table_data = {
         'Speed': get_or_default(data, ['wind', 'speed']),
         'Degree / Direction': get_or_default(data, ['wind', 'deg']),
         'Gust': get_or_default(data, ['wind', 'gust']),
     }
-    print(create_table(table_data))
-    print()
+    pprint(create_table(table_data))
+    pprint()
 
 
 def sunrise_and_sunset(data: dict) -> None:
-    print()
-    print(f"Sunrise & Sunset")
-    print()
+    pprint()
+    pprint(f"Sunrise & Sunset")
+    pprint()
     table_data = {
         'Sunrise': get_or_default(data, ['sys', 'sunrise']),
         'Sunset': get_or_default(data, ['sys', 'sunset']),
     }
-    print(create_table(table_data))
-    print()
+    pprint(create_table(table_data))
+    pprint()
