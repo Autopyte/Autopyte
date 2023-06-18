@@ -2,8 +2,9 @@
 #  This file is part of Project WeatherBoy and is released under the "MIT License Agreement"
 #  Please see the LICENSE file that should have been included as part of this package
 
-from typing import Any, List
-from client import search_location, fetch_current_weather
+from typing import Any
+
+from weatherboy.client import search_location, fetch_current_weather
 from weatherboy.models import City
 
 

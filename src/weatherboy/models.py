@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 class City(BaseModel):
     name: str
-    state: str
+    state: str = ""
     country: str
     lat: float
     lon: float
