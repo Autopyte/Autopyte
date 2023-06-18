@@ -1,7 +1,7 @@
 #  Copyright (c) 2023 Autopyte - All Rights Reserved
 #  This file is part of Project WeatherBoy and is released under the "MIT License Agreement"
 #  Please see the LICENSE file that should have been included as part of this package
-
+import sys
 from typing import Any
 
 import questionary
@@ -27,4 +27,6 @@ def pprint(text: str = '', style: str = None, **kwargs: Any) -> None:
 
 
 def reset_current_line() -> None:
-    print("\r", end='')
+    max_cols: int = 100
+    sys.stdout.write("\r{}\r".format(' ' * max_cols))
+    sys.stdout.flush()
