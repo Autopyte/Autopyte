@@ -141,3 +141,7 @@ def sunrise_and_sunset(data: dict) -> None:
     }
     pprint(create_table(table_data))
     pprint()
+
+
+if __name__ == '__main__':
+    entrypoint()
