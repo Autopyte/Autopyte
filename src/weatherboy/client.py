@@ -9,6 +9,7 @@ from requests import Response
 
 BASE_URL: str = "https://api.openweathermap.org"
 API_KEY: str = "54c4b31043220bf31b4fd51fb22852ab"
+UNITS: str = "metric"
 
 CURRENT_WEATHER_ENDPOINT: str = "/data/2.5/weather"
 FORECAST_ENDPOINT: str = "/data/2.5/forecast"
@@ -20,7 +21,7 @@ def search_location(q: str, limit: int = 5) -> list:
     Search for a location using the OpenWeatherMap API
 
     :param q: The location to search for (e.g. "London")
-    :param limit:
+    :param limit: max number of cities to show
     :return: The response from the API
     """
 
@@ -54,7 +55,8 @@ def fetch_current_weather(lat: float, lon: float) -> Any:
     params: dict = {
         "lat": lat,
         "lon": lon,
-        "appid": API_KEY
+        "appid": API_KEY,
+        "units": UNITS,
     }
 
     response: Response = requests.get(url, params=params)
@@ -80,7 +82,8 @@ def fetch_weather_forecast(lat: float, lon: float) -> Any:
     params: dict = {
         "lat": lat,
         "lon": lon,
-        "appid": API_KEY
+        "appid": API_KEY,
+        "units": UNITS,
     }
 
     response: Response = requests.get(url, params=params)
@@ -91,4 +94,3 @@ def fetch_weather_forecast(lat: float, lon: float) -> Any:
     else:
         # raise error
         raise Exception("Unable to fetch weather forecast")
-

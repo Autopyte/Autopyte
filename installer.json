@@ -7,7 +7,7 @@
   },
   {
    "optionDest": "filenames",
-   "value": "./src/weatherboy/__main__.py"
+   "value": "./src/weatherboy/cli.py"
   },
   {
    "optionDest": "onefile",

@@ -2,13 +2,14 @@
 #  This file is part of Project WeatherBoy and is released under the "MIT License Agreement"
 #  Please see the LICENSE file that should have been included as part of this package
 
+from datetime import datetime
 from typing import Any
 
 import questionary
 
 from weatherboy.models import City
 from weatherboy.service import search_for_cities, get_current_weather
-from weatherboy.utils import get_or_default, create_table, reset_current_line, pprint
+from weatherboy.utils import get_or_default, create_table, reset_current_line, pprint, degrees_to_direction
 
 
 def entrypoint() -> None:
@@ -80,8 +81,8 @@ def current_weather(data: dict) -> None:
     pprint()
     table_data = {
         'Weather': get_or_default(data, ['weather', 0, 'main']),
-        'Temperature': get_or_default(data, ['main', 'temp']),
-        'Feels Like': get_or_default(data, ['main', 'feels_like']),
+        'Temperature': get_or_default(data, ['main', 'temp'], cast=float, unit_format="%.2f °C"),
+        'Feels Like': get_or_default(data, ['main', 'feels_like'], cast=float, unit_format="%.2f °C"),
     }
     pprint(create_table(table_data))
     pprint()
@@ -94,10 +95,10 @@ def detailed_weather(data: dict) -> None:
     table_data = {
         'Weather': get_or_default(data, ['weather', 0, 'main']),
         'Description': get_or_default(data, ['weather', 0, 'description']),
-        'Temperature': get_or_default(data, ['main', 'temp']),
-        'Feels Like': get_or_default(data, ['main', 'feels_like']),
-        'Min Temp': get_or_default(data, ['main', 'temp_min']),
-        'Max Temp': get_or_default(data, ['main', 'temp_max']),
+        'Temperature': get_or_default(data, ['main', 'temp'], cast=float, unit_format="%.2f °C"),
+        'Feels Like': get_or_default(data, ['main', 'feels_like'], cast=float, unit_format="%.2f °C"),
+        'Min Temp': get_or_default(data, ['main', 'temp_min'], cast=float, unit_format="%.2f °C"),
+        'Max Temp': get_or_default(data, ['main', 'temp_max'], cast=float, unit_format="%.2f °C"),
     }
     pprint(create_table(table_data))
     pprint()
@@ -108,11 +109,11 @@ def current_details(data: dict) -> None:
     pprint(f"Current Details")
     pprint()
     table_data = {
-        'Pressure': get_or_default(data, ['main', 'pressure']),
-        'Humidity': get_or_default(data, ['main', 'humidity']),
-        'Sea Level': get_or_default(data, ['main', 'sea_level']),
-        'Ground Level': get_or_default(data, ['main', 'grnd_level']),
-        'Visibility': get_or_default(data, ['visibility']),
+        'Pressure': get_or_default(data, ['main', 'pressure'], cast=int, unit_format="%d hPa"),
+        'Humidity': get_or_default(data, ['main', 'humidity'], cast=int, unit_format="%d %%"),
+        'Sea Level': get_or_default(data, ['main', 'sea_level'], cast=int, unit_format="%d hPa"),
+        'Ground Level': get_or_default(data, ['main', 'grnd_level'], cast=int, unit_format="%d hPa"),
+        'Visibility': get_or_default(data, ['visibility'], cast=lambda m: float(m) / 1000, unit_format="%.2f km"),
     }
     pprint(create_table(table_data))
     pprint()
@@ -123,9 +124,10 @@ def wind(data: dict) -> None:
     pprint(f"Wind")
     pprint()
     table_data = {
-        'Speed': get_or_default(data, ['wind', 'speed']),
-        'Degree / Direction': get_or_default(data, ['wind', 'deg']),
-        'Gust': get_or_default(data, ['wind', 'gust']),
+        'Speed': get_or_default(data, ['wind', 'speed'], cast=float, unit_format="%.2f m/s"),
+        'Degree / Direction': get_or_default(data, ['wind', 'deg'], cast=int, unit_format="%d°") + ' / '
+                              + get_or_default(data, ['wind', 'deg'], cast=lambda x: degrees_to_direction(x)),
+        'Gust': get_or_default(data, ['wind', 'gust'], cast=float, unit_format="%.2f m/s"),
     }
     pprint(create_table(table_data))
     pprint()
@@ -136,8 +138,8 @@ def sunrise_and_sunset(data: dict) -> None:
     pprint(f"Sunrise & Sunset")
     pprint()
     table_data = {
-        'Sunrise': get_or_default(data, ['sys', 'sunrise']),
-        'Sunset': get_or_default(data, ['sys', 'sunset']),
+        'Sunrise': get_or_default(data, ['sys', 'sunrise'], cast=lambda t: datetime.fromtimestamp(t)),
+        'Sunset': get_or_default(data, ['sys', 'sunset'], cast=lambda t: datetime.fromtimestamp(t)),
     }
     pprint(create_table(table_data))
     pprint()
