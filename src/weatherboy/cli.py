@@ -9,7 +9,7 @@ import questionary
 
 from weatherboy.models import City
 from weatherboy.service import search_for_cities, get_current_weather
-from weatherboy.utils import get_or_default, create_table, reset_current_line, pprint, degrees_to_direction
+from weatherboy.utils import get_or_default, create_table, reset_current_line, pprint, degrees_to_direction, get_weather_icon
 
 
 def entrypoint() -> None:
@@ -80,7 +80,8 @@ def current_weather(data: dict) -> None:
     pprint(f"Current Weather at {data['name']}")
     pprint()
     table_data = {
-        'Weather': get_or_default(data, ['weather', 0, 'main']),
+        'Weather': get_weather_icon(get_or_default(data, ['weather', 0, 'icon'])) + ' '
+                   + get_or_default(data, ['weather', 0, 'main']),
         'Temperature': get_or_default(data, ['main', 'temp'], cast=float, unit_format="%.2f °C"),
         'Feels Like': get_or_default(data, ['main', 'feels_like'], cast=float, unit_format="%.2f °C"),
     }
